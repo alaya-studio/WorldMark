@@ -83,7 +83,7 @@
       <hr>
 
       <!-- Abstract -->
-      <section class="section pt-0">
+      <section class="section pt-0" id="abstract">
         <div class="content">
           <h2 class="title is-3">Abstract</h2>
           <p>
@@ -100,7 +100,7 @@
       </section>
 
       <!-- Introduction Video placeholder -->
-      <section class="section pt-0">
+      <section class="section pt-0" id="video">
         <div class="content">
           <h2 class="title is-3">Introduction Video</h2>
           <div class="video-embed">
@@ -114,8 +114,8 @@
         </div>
       </section>
 
-      <!-- Overview: Three Pillars -->
-      <section class="section pt-0">
+      <!-- Overview -->
+      <section class="section pt-0" id="overview">
         <div class="content">
           <h2 class="title is-3">Overview</h2>
           <p>
@@ -128,7 +128,7 @@
       </section>
 
       <!-- Benchmark Comparison Table -->
-      <section class="section pt-0">
+      <section class="section pt-0" id="comparison">
         <div class="content">
           <h2 class="title is-3">Why WorldMark?</h2>
           <p>Existing benchmarks lack standardized scenes, unified cross-model action mapping, keyboard-interactive support, or difficulty hierarchies. <strong style="font-family: 'Courier New', monospace;">WorldMark</strong> is the first to provide all of these.</p>
@@ -193,7 +193,7 @@
       </section>
 
       <!-- Image Suite -->
-      <section class="section pt-0">
+      <section class="section pt-0" id="image-suite">
         <div class="content">
           <h2 class="title is-3">Image Suite</h2>
           <p>
@@ -207,7 +207,7 @@
       </section>
 
       <!-- Action Suite -->
-      <section class="section pt-0">
+      <section class="section pt-0" id="action-suite">
         <div class="content">
           <h2 class="title is-3">Action Suite</h2>
           <p>
@@ -248,7 +248,7 @@
       </section>
 
       <!-- Quantitative Results -->
-      <section class="section pt-0">
+      <section class="section pt-0" id="results">
         <div class="content">
           <h2 class="title is-3">Quantitative Results</h2>
 
@@ -470,7 +470,7 @@
       </section>
 
       <!-- Key Takeaways -->
-      <section class="section pt-0">
+      <section class="section pt-0" id="takeaways">
         <div class="content">
           <h2 class="title is-3">Key Takeaways</h2>
           <div class="columns is-multiline">
@@ -563,6 +563,47 @@
       text-decoration-color: #94a3b8;
     }
 
+    /* Right-side Navigation */
+    .side-nav {
+      position: fixed;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .side-nav li {
+      margin-bottom: 0.5rem;
+    }
+    .side-nav a {
+      display: block;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-light);
+      text-decoration: none;
+      border-right: 2px solid transparent;
+      transition: var(--transition);
+      text-align: right;
+      white-space: nowrap;
+    }
+    .side-nav a:hover {
+      color: var(--primary-color);
+      border-right-color: var(--primary-color);
+    }
+    .side-nav a.active {
+      color: var(--primary-color);
+      font-weight: 700;
+      border-right-color: var(--primary-color);
+    }
+    @media screen and (max-width: 1400px) {
+      .side-nav {
+        display: none;
+      }
+    }
+
     /* Card hover */
     .card {
       transition: var(--transition);
@@ -572,5 +613,42 @@
       box-shadow: var(--shadow-lg);
     }
   </style>
+  <!-- Right-side Navigation -->
+  <ul class="side-nav">
+    <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#video">Video</a></li>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#comparison">Why WorldMark?</a></li>
+    <li><a href="#image-suite">Image Suite</a></li>
+    <li><a href="#action-suite">Action Suite</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#takeaways">Key Takeaways</a></li>
+    <li><a href="#bibtex">BibTeX</a></li>
+  </ul>
+
+  <script>
+    // Scroll-spy for side navigation
+    document.addEventListener('DOMContentLoaded', function() {
+      const navLinks = document.querySelectorAll('.side-nav a');
+      const sections = [];
+      navLinks.forEach(function(link) {
+        var id = link.getAttribute('href').slice(1);
+        var el = document.getElementById(id);
+        if (el) sections.push({ id: id, el: el });
+      });
+      function onScroll() {
+        var scrollPos = window.scrollY + window.innerHeight / 3;
+        var current = '';
+        sections.forEach(function(s) {
+          if (s.el.offsetTop <= scrollPos) current = s.id;
+        });
+        navLinks.forEach(function(link) {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+        });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    });
+  </script>
 </body>
 </html>
