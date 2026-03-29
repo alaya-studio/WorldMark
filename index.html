@@ -155,6 +155,11 @@
               </div>
             </div>
           </div>
+
+          <figure class="image" style="margin: 2.5rem auto; max-width: 900px;">
+            <img src="static/images/teaser.png" alt="Overview of WorldMark: diverse scenes, unified action mapping, and cross-model comparison" loading="lazy" style="border-radius: var(--border-radius-lg); box-shadow: var(--shadow-lg); width: 100%;">
+            <figcaption class="has-text-centered has-text-grey is-size-7" style="margin-top: 0.75rem;"><strong>Fig. 1:</strong> Overview of WorldMark. (a) A curated test suite of 500 cases spanning first- and third-person views with photorealistic and stylized scenes. (b) A unified action-mapping layer translating a shared WASD vocabulary into each model's native format. (c) Same reference image + same action sequence reveals striking quality divergence across models.</figcaption>
+          </figure>
         </div>
       </section>
 
@@ -276,10 +281,9 @@
           <p>
             50 diverse reference images spanning three scene categories (<strong>Nature</strong>, <strong>City</strong>, <strong>Indoor</strong>), two visual styles (<strong>Real</strong>, <strong>Stylized</strong>), and two viewpoints (<strong>First-person</strong>, <strong>Third-person</strong>). The stylized subset covers oil painting, Ukiyo-e, cyberpunk, and Minecraft aesthetics, ensuring evaluation is not biased toward photorealistic domains alone. Cross-viewpoint pairs yield <strong>100 test images</strong> total.
           </p>
-          <!-- Placeholder for Fig. 2 image -->
-          <figure class="image" style="margin: 2rem auto; max-width: 800px;">
-            <img src="static/images/carousel1.jpg" alt="Image Suite overview showing diverse scenes and styles" loading="lazy" style="border-radius: var(--border-radius-lg); box-shadow: var(--shadow-lg);">
-            <figcaption class="has-text-centered has-text-grey is-size-7" style="margin-top: 0.75rem;">Overview of the Image Suite. Diverse scenes and styles are covered, each shown in first-person and generated third-person views.</figcaption>
+          <figure class="image" style="margin: 2rem auto; max-width: 900px;">
+            <img src="static/images/image_suite.png" alt="Image Suite overview showing diverse scenes and styles across Indoor, City, Nature categories in Real and Stylized variants" loading="lazy" style="border-radius: var(--border-radius-lg); box-shadow: var(--shadow-lg); width: 100%;">
+            <figcaption class="has-text-centered has-text-grey is-size-7" style="margin-top: 0.75rem;"><strong>Fig. 2:</strong> Overview of the Image Suite. Diverse scenes and styles are covered, each shown in first-person and generated third-person views.</figcaption>
           </figure>
         </div>
       </section>
@@ -311,7 +315,17 @@
               </div>
             </div>
           </div>
+          <figure class="image" style="margin: 2rem auto; max-width: 800px;">
+            <img src="static/images/trajectories_3d.png" alt="The 15 standardized action sequences from elementary translations to combined and cyclic trajectories" loading="lazy" style="border-radius: var(--border-radius-lg); box-shadow: var(--shadow-lg); width: 100%;">
+            <figcaption class="has-text-centered has-text-grey is-size-7" style="margin-top: 0.75rem;"><strong>Fig. 3:</strong> The 15 standardized action sequences, ranging from elementary translations and rotations to combined and cyclic trajectories.</figcaption>
+          </figure>
+
           <p>Combined with 100 test images, this yields approximately <strong>500 standardized evaluation cases</strong>. A VLM-based scene-aware filtering step ensures only physically plausible actions are assigned to each image.</p>
+
+          <figure class="image" style="margin: 2rem auto; max-width: 800px;">
+            <img src="static/images/vlm_traj.png" alt="Context-aware action selection using VLM reasoning" loading="lazy" style="border-radius: var(--border-radius-lg); box-shadow: var(--shadow-lg); width: 100%;">
+            <figcaption class="has-text-centered has-text-grey is-size-7" style="margin-top: 0.75rem;"><strong>Fig. 4:</strong> Context-aware action selection. A VLM analyzes the initial image to identify physical constraints and selects plausible action sequences from the predefined library.</figcaption>
+          </figure>
         </div>
       </section>
 
@@ -566,6 +580,44 @@
               </tbody>
             </table>
           </div>
+        </div>
+      </section>
+
+      <!-- Qualitative Results -->
+      <section class="section pt-0">
+        <div class="content">
+          <h2 class="title is-3">Qualitative Results</h2>
+
+          <figure class="image" style="margin: 2rem auto; max-width: 900px;">
+            <img src="static/images/quali_results.png" alt="Qualitative comparison across Visual Quality, Control Alignment, and World Consistency" loading="lazy" style="border-radius: var(--border-radius-lg); box-shadow: var(--shadow-lg); width: 100%;">
+            <figcaption class="has-text-centered has-text-grey is-size-7" style="margin-top: 0.75rem;"><strong>Fig. 5:</strong> Qualitative comparison across three evaluation dimensions. The top row demonstrates successful video generation, while the bottom row illustrates common failures in Visual Quality, Control Alignment, and World Consistency.</figcaption>
+          </figure>
+
+          <div class="columns is-multiline" style="margin-top: 2rem;">
+            <div class="column is-4">
+              <figure class="image">
+                <img src="static/images/state_compare.png" alt="State Consistency comparison" loading="lazy" style="border-radius: var(--border-radius); box-shadow: var(--shadow-md); width: 100%;">
+                <figcaption class="has-text-centered has-text-grey is-size-7" style="margin-top: 0.5rem;">State Consistency comparison</figcaption>
+              </figure>
+            </div>
+            <div class="column is-4">
+              <figure class="image">
+                <img src="static/images/content_compare.png" alt="Content Consistency comparison" loading="lazy" style="border-radius: var(--border-radius); box-shadow: var(--shadow-md); width: 100%;">
+                <figcaption class="has-text-centered has-text-grey is-size-7" style="margin-top: 0.5rem;">Content Consistency comparison</figcaption>
+              </figure>
+            </div>
+            <div class="column is-4">
+              <figure class="image">
+                <img src="static/images/style_compare.png" alt="Style Consistency comparison" loading="lazy" style="border-radius: var(--border-radius); box-shadow: var(--shadow-md); width: 100%;">
+                <figcaption class="has-text-centered has-text-grey is-size-7" style="margin-top: 0.5rem;">Style Consistency comparison</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <figure class="image" style="margin: 2rem auto; max-width: 600px;">
+            <img src="static/images/spearman_correlation.png" alt="Spearman correlation between automated metrics and human preferences" loading="lazy" style="border-radius: var(--border-radius); box-shadow: var(--shadow-md); width: 100%;">
+            <figcaption class="has-text-centered has-text-grey is-size-7" style="margin-top: 0.5rem;">Spearman's rank correlation between WorldMark automated metrics and human preference rankings.</figcaption>
+          </figure>
         </div>
       </section>
 
