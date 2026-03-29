@@ -118,9 +118,11 @@
       <section class="section pt-0">
         <div class="content">
           <h2 class="title is-3">Overview</h2>
-          <figure class="image" style="margin: 2.5rem auto; max-width: 900px;">
+          <p>
+            Current interactive world models each define their own control interfaces, scenes, and evaluation protocols, making cross-model comparison impossible. <strong style="font-family: 'Courier New', monospace;">WorldMark</strong> resolves this fragmentation through three pillars: <strong>(a)</strong> A curated test suite of 500 cases spanning first- and third-person views with photorealistic and stylized scenes. <strong>(b)</strong> A unified action-mapping layer translating a shared WASD vocabulary into each model's native format. <strong>(c)</strong> Same reference image + same action sequence reveals striking quality divergence across models.
+          </p>
+          <figure class="image" style="margin: 2rem auto; max-width: 900px;">
             <img src="static/images/teaser.png" alt="Overview of WorldMark: diverse scenes, unified action mapping, and cross-model comparison" loading="lazy" style="border-radius: var(--border-radius-lg); box-shadow: var(--shadow-lg); width: 100%;">
-            <figcaption class="has-text-centered has-text-grey is-size-7" style="margin-top: 0.75rem;"><strong>Fig. 1:</strong> Overview of WorldMark. (a) A curated test suite of 500 cases spanning first- and third-person views with photorealistic and stylized scenes. (b) A unified action-mapping layer translating a shared WASD vocabulary into each model's native format. (c) Same reference image + same action sequence reveals striking quality divergence across models.</figcaption>
           </figure>
         </div>
       </section>
@@ -190,52 +192,6 @@
         </div>
       </section>
 
-      <!-- Evaluation Dimension Suite -->
-      <section class="section pt-0">
-        <div class="content">
-          <h2 class="title is-3">Evaluation Dimensions</h2>
-          <p><strong style="font-family: 'Courier New', monospace;">WorldMark</strong> evaluates generated videos along three complementary dimensions with eight metrics:</p>
-
-          <div class="columns is-multiline" style="margin-top: 1.5rem;">
-            <div class="column is-4">
-              <div class="card" style="height: 100%; border-radius: var(--border-radius-lg); border-left: 4px solid #3b82f6;">
-                <div class="card-content">
-                  <p class="title is-5">Visual Quality</p>
-                  <ul style="margin-top: 0.5rem;">
-                    <li><strong>Aesthetic Quality</strong> &mdash; human-perceived aesthetic appeal via LAION aesthetic predictor</li>
-                    <li><strong>Imaging Quality</strong> &mdash; low-level distortion detection via MUSIQ</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="column is-4">
-              <div class="card" style="height: 100%; border-radius: var(--border-radius-lg); border-left: 4px solid #10b981;">
-                <div class="card-content">
-                  <p class="title is-5">Control Alignment</p>
-                  <ul style="margin-top: 0.5rem;">
-                    <li><strong>Translation Error</strong> &mdash; 3D camera pose via DROID-SLAM reconstruction</li>
-                    <li><strong>Rotation Error</strong> &mdash; geodesic angular deviation of heading</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="column is-4">
-              <div class="card" style="height: 100%; border-radius: var(--border-radius-lg); border-left: 4px solid #8b5cf6;">
-                <div class="card-content">
-                  <p class="title is-5">World Consistency</p>
-                  <ul style="margin-top: 0.5rem;">
-                    <li><strong>Reprojection Error</strong> &mdash; 3D spatial coherence via DROID-SLAM + DBA</li>
-                    <li><strong>State Consistency</strong> &mdash; spatiotemporal object stability</li>
-                    <li><strong>Content Consistency</strong> &mdash; hallucination detection</li>
-                    <li><strong>Style Consistency</strong> &mdash; global visual uniformity</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- Image Suite -->
       <section class="section pt-0">
         <div class="content">
@@ -291,41 +247,51 @@
         </div>
       </section>
 
-      <!-- Unified Action Interface -->
-      <section class="section pt-0">
-        <div class="content">
-          <h2 class="title is-3">Unified Action Interface</h2>
-          <p>
-            Each model consumes actions in a proprietary format. <strong style="font-family: 'Courier New', monospace;">WorldMark</strong> defines a shared action vocabulary and implements per-model <strong>action-mapping adapters</strong> that translate the canonical representation into each model's native format:
-          </p>
-
-          <div class="table-container" style="margin-top: 1.5rem;">
-            <table class="table is-bordered is-striped is-hoverable is-fullwidth">
-              <thead>
-                <tr>
-                  <th>Model</th>
-                  <th>Native Format</th>
-                  <th>Mapping Strategy</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td>YUME 1.5</td><td>Caption prompts</td><td>Directional keywords in text</td></tr>
-                <tr><td>HY-World</td><td>6-DoF pose params</td><td>Latent timescale matching</td></tr>
-                <tr><td>HY-GameCraft</td><td>6-DoF pose params</td><td>Latent timescale matching</td></tr>
-                <tr><td>Genie 3</td><td>Gamepad controls</td><td>Directional button presses</td></tr>
-                <tr><td>MatrixGame</td><td>Action functions</td><td>Corresponding action API calls</td></tr>
-                <tr><td>Open-Oasis</td><td>25-dim action vectors</td><td>Set movement dimensions</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p>Adding support for a new model requires implementing only a single action-mapping adapter.</p>
-        </div>
-      </section>
-
       <!-- Quantitative Results -->
       <section class="section pt-0">
         <div class="content">
           <h2 class="title is-3">Quantitative Results</h2>
+
+          <!-- Evaluation Dimensions -->
+          <p><strong style="font-family: 'Courier New', monospace;">WorldMark</strong> evaluates generated videos along three complementary dimensions with eight metrics:</p>
+
+          <div class="columns is-multiline" style="margin-top: 1.5rem; margin-bottom: 2rem;">
+            <div class="column is-4">
+              <div class="card" style="height: 100%; border-radius: var(--border-radius-lg); border-left: 4px solid #3b82f6;">
+                <div class="card-content">
+                  <p class="title is-5">Visual Quality</p>
+                  <ul style="margin-top: 0.5rem;">
+                    <li><strong>Aesthetic Quality</strong> &mdash; human-perceived aesthetic appeal via LAION aesthetic predictor</li>
+                    <li><strong>Imaging Quality</strong> &mdash; low-level distortion detection via MUSIQ</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="column is-4">
+              <div class="card" style="height: 100%; border-radius: var(--border-radius-lg); border-left: 4px solid #10b981;">
+                <div class="card-content">
+                  <p class="title is-5">Control Alignment</p>
+                  <ul style="margin-top: 0.5rem;">
+                    <li><strong>Translation Error</strong> &mdash; 3D camera pose via DROID-SLAM reconstruction</li>
+                    <li><strong>Rotation Error</strong> &mdash; geodesic angular deviation of heading</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="column is-4">
+              <div class="card" style="height: 100%; border-radius: var(--border-radius-lg); border-left: 4px solid #8b5cf6;">
+                <div class="card-content">
+                  <p class="title is-5">World Consistency</p>
+                  <ul style="margin-top: 0.5rem;">
+                    <li><strong>Reprojection Error</strong> &mdash; 3D spatial coherence via DROID-SLAM + DBA</li>
+                    <li><strong>State Consistency</strong> &mdash; spatiotemporal object stability</li>
+                    <li><strong>Content Consistency</strong> &mdash; hallucination detection</li>
+                    <li><strong>Style Consistency</strong> &mdash; global visual uniformity</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <!-- First-Person Real -->
           <h3 class="title is-4" style="margin-top: 2rem;">First-Person Real</h3>
