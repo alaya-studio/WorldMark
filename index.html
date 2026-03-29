@@ -104,13 +104,11 @@
       <section class="section pt-0" id="video">
         <div class="content">
           <h2 class="title is-3">Introduction Video</h2>
-          <div class="video-embed">
-            <iframe
-              src="https://www.youtube.com/embed/JkaxUblCGz0"
-              title="Introduction Video"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen></iframe>
+          <div style="border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-xl);">
+            <video width="100%" controls preload="metadata" poster="">
+              <source src="static/videos/intro.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
           </div>
         </div>
       </section>
