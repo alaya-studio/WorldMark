@@ -181,40 +181,65 @@ def gen_problem(n):
         frames.append(f)
     return frames
 
-# ── Slide 3: Our Approach (6.5s) ────────────────────────────────────────────
+# ── Slide 3: Three Pillars (6.5s) ───────────────────────────────────────────
 def gen_approach(n):
     cards = [
-        ("01", "Unified Action Mapping",
-         ["Translates WASD-style actions", "into each model's native format"]),
-        ("02", "Hierarchical Test Suite",
-         ["500 cases, 3 difficulty tiers", "First & third-person views"]),
-        ("03", "Modular Evaluation Toolkit",
-         ["Image Suite", "Action Suite", "Unified Action Mapping"]),
+        ("01", "Unified Action\nMapping",
+         ["WASD + L/R vocabulary", "translated to each model's", "native control format"],
+         (80, 160, 255)),
+        ("02", "Hierarchical\nTest Suite",
+         ["First & third-person views", "Real & Stylized scenes", "3 difficulty tiers"],
+         (60, 210, 170)),
+        ("03", "Modular Evaluation\nToolkit",
+         ["Image Suite", "Action Suite", "Unified Action Mapping"],
+         (160, 100, 255)),
     ]
     ctimes = [0.3, 1.0, 1.7]
-    CW, CH = 480, 350
-    GAP = 60
-    TW = 3*CW + 2*GAP
-    SX = (W-TW)//2
-    CY = 245
+    GAP  = 55
+    CW   = (W - 2*GAP - 160*2) // 3
+    SX   = 160
+    CY   = 185
+    TOP  = 6
+    CARD_BG2 = (18, 28, 68)
+    f_num_sm  = load_font(52)
+    f_ctitle  = load_font(42)
+    f_cbody   = load_font(30)
+
     frames = []
     for i in range(n):
         t = i/FPS
         f, d = make_base()
-        ctext(d, "Our Approach", 75, f_title, TEXT_W)
-        d.line([(W//2-200,158),(W//2+200,158)], fill=ACCENT, width=3)
-        for ci, (num, title, items) in enumerate(cards):
+        ctext(d, "Three Pillars of WorldMark", 65, f_title, TEXT_W)
+        d.line([(W//2-320,148),(W//2+320,148)], fill=ACCENT, width=3)
+        for ci, (num, title, items, col) in enumerate(cards):
             ct = ctimes[ci]
             if t < ct: continue
-            a = min(1.0, (t-ct)/0.5)
+            a  = min(1.0, (t-ct)/0.5)
             cx0 = SX + ci*(CW+GAP)
-            cx1 = cx0+CW; cy1 = CY+CH
-            d.rounded_rectangle([cx0,CY,cx1,cy1], radius=16,
-                fill=fade_col(CARD_BG,a), outline=fade_col(ACCENT,a), width=2)
-            d.text((cx0+24,CY+18), num, font=f_num, fill=fade_col(ACCENT,a))
-            d.text((cx0+24,CY+115), title, font=f_card_h, fill=fade_col(TEXT_W,a))
-            for ii,item in enumerate(items):
-                d.text((cx0+36,CY+172+ii*48), "\u00b7 "+item, font=f_card_b, fill=fade_col(TEXT_G,a))
+            cx1 = cx0 + CW
+            CH  = 530
+            cy1 = CY + CH
+            # Card bg
+            d.rounded_rectangle([cx0,CY,cx1,cy1], radius=14,
+                fill=fade_col(CARD_BG2, a))
+            # Top color bar
+            d.rounded_rectangle([cx0,CY,cx1,CY+TOP], radius=3,
+                fill=fade_col(col, a))
+            # Number
+            d.text((cx0+24, CY+TOP+14), num, font=f_num_sm, fill=fade_col(col, a))
+            # Title (may be two lines)
+            ty = CY + TOP + 14 + 62
+            for line in title.split('\n'):
+                d.text((cx0+24, ty), line, font=f_ctitle, fill=fade_col(TEXT_W, a))
+                ty += 50
+            # Divider
+            ty += 10
+            d.line([(cx0+24, ty),(cx1-24, ty)], fill=fade_col(col, a), width=1)
+            ty += 20
+            # Items (plain text, no bullets)
+            for item in items:
+                d.text((cx0+24, ty), item, font=f_cbody, fill=fade_col(TEXT_G, a))
+                ty += 46
         frames.append(f)
     return frames
 
@@ -318,21 +343,15 @@ def gen_metrics(n):
             a = min(1.0, (t - dt) / 0.5)
             cx0 = SX + di*(CW+GAP)
             cx1 = cx0 + CW
-            # card height depends on content
             CH = 80 + len(metrics)*68 + 30
             cy1 = CY + CH
 
-            # Card background
             d.rounded_rectangle([cx0, CY, cx1, cy1], radius=12,
                 fill=fade_col(CARD_BG2, a))
-            # Colored top border bar
             d.rounded_rectangle([cx0, CY, cx1, CY+TOP_BAR], radius=3,
                 fill=fade_col(col, a))
-
-            # Category title (colored)
             d.text((cx0+24, CY+TOP_BAR+18), dname, font=f_dim_title, fill=fade_col(col, a))
 
-            # Metrics
             for mi, m in enumerate(metrics):
                 my = CY + TOP_BAR + 18 + 58 + mi*62
                 dot_cx = cx0 + 30
@@ -341,54 +360,152 @@ def gen_metrics(n):
                     fill=fade_col(col, a))
                 d.text((cx0+52, my), m, font=f_metric, fill=fade_col(TEXT_W, a))
 
+        # Key Finding card (appears after all dimension cards)
+        kf_sec = 2.6
+        if t >= kf_sec:
+            a = min(1.0, (t - kf_sec) / 0.5)
+            AMBER = (255, 170, 50)
+            kf_x0, kf_y0 = SX, CY + max(80 + 4*68 + 30, 80 + 2*68 + 30) + 30
+            kf_x1 = W - SX
+            kf_h  = 110
+            d.rounded_rectangle([kf_x0, kf_y0, kf_x1, kf_y0+kf_h], radius=10,
+                fill=fade_col((18, 28, 68), a))
+            d.rounded_rectangle([kf_x0, kf_y0, kf_x0+6, kf_y0+kf_h], radius=3,
+                fill=fade_col(AMBER, a))
+            d.text((kf_x0+22, kf_y0+14), "Key Finding", font=f_dim_title,
+                fill=fade_col(AMBER, a))
+            d.text((kf_x0+22, kf_y0+62),
+                "Visual quality and world consistency are largely uncorrelated across models",
+                font=f_metric, fill=fade_col(TEXT_W, a))
+
         frames.append(f)
     return frames
 
-# ── Slide 9: Results (5.5s) ─────────────────────────────────────────────────
+# ── Slide 9: WorldMark at a Glance (5.5s) ───────────────────────────────────
 def gen_results(n):
-    stats = [("6","Models Evaluated"),("500","Test Cases"),("8","Metrics"),("3","Difficulty Tiers")]
-    stimes = [0.3,0.7,1.1,1.5]
-    CW,CH=340,270; GAP=55
-    TW=4*CW+3*GAP; SX=(W-TW)//2; CY=360
+    stats = [
+        ("6",   "Models\nBenchmarked",  (80,  160, 255)),
+        ("500", "Evaluation\nCases",    (60,  210, 170)),
+        ("8",   "Standardized\nMetrics",(160, 100, 255)),
+        ("3",   "Difficulty\nTiers",    (240,  80, 140)),
+    ]
+    models = ["YUME 1.5", "MatrixGame 2.0", "HY-World",
+              "HY-GameCraft", "Genie 3", "Open-Oasis"]
+    stimes = [0.3, 0.7, 1.1, 1.5]
+    GAP = 45; TOP = 6
+    CW = (W - 3*GAP - 160*2) // 4
+    SX = 160; CY = 195; CH = 310
+    CARD_BG2 = (18, 28, 68)
+    f_stat_n  = load_font(90)
+    f_stat_l  = load_font(30)
+    f_model   = load_font(28)
+    f_models_h= load_font(32)
+
     frames = []
     for i in range(n):
-        t=i/FPS
-        f,d=make_base()
-        ctext(d,"Benchmark at a Glance",75,f_title,TEXT_W)
-        d.line([(W//2-265,158),(W//2+265,158)],fill=ACCENT,width=3)
-        ctext(d,"WorldMark provides a standardized, reproducible evaluation framework",195,f_body_s,TEXT_G)
-        for si,((num,label),st) in enumerate(zip(stats,stimes)):
-            if t<st: continue
-            a=min(1.0,(t-st)/0.4)
-            cx0=SX+si*(CW+GAP); cx1=cx0+CW; cy1=CY+CH
-            d.rounded_rectangle([cx0,CY,cx1,cy1],radius=16,
-                fill=fade_col(CARD_BG,a),outline=fade_col(ACCENT,a),width=2)
-            bb=d.textbbox((0,0),num,font=f_num)
-            nx=cx0+(CW-(bb[2]-bb[0]))//2
-            d.text((nx,CY+25),num,font=f_num,fill=fade_col(ACCENT,a))
-            bb=d.textbbox((0,0),label,font=f_card_b)
-            lx=cx0+(CW-(bb[2]-bb[0]))//2
-            d.text((lx,CY+140),label,font=f_card_b,fill=fade_col(TEXT_G,a))
+        t = i/FPS
+        f, d = make_base()
+        ctext(d, "WorldMark at a Glance", 65, f_title, TEXT_W)
+        d.line([(W//2-290,148),(W//2+290,148)], fill=ACCENT, width=3)
+
+        for si, ((num, label, col), st) in enumerate(zip(stats, stimes)):
+            if t < st: continue
+            a   = min(1.0, (t-st)/0.4)
+            cx0 = SX + si*(CW+GAP)
+            cx1 = cx0 + CW
+            cy1 = CY + CH
+            d.rounded_rectangle([cx0,CY,cx1,cy1], radius=14,
+                fill=fade_col(CARD_BG2, a))
+            d.rounded_rectangle([cx0,CY,cx1,CY+TOP], radius=3,
+                fill=fade_col(col, a))
+            # Big number centered
+            bb = d.textbbox((0,0), num, font=f_stat_n)
+            nx = cx0 + (CW - (bb[2]-bb[0])) // 2
+            d.text((nx, CY+TOP+20), num, font=f_stat_n, fill=fade_col(col, a))
+            # Label (two lines)
+            ly = CY + TOP + 20 + (bb[3]-bb[1]) + 18
+            for line in label.split('\n'):
+                bb2 = d.textbbox((0,0), line, font=f_stat_l)
+                lx  = cx0 + (CW - (bb2[2]-bb2[0])) // 2
+                d.text((lx, ly), line, font=f_stat_l, fill=fade_col(TEXT_G, a))
+                ly += 38
+
+        # Models Evaluated box
+        models_sec = 2.1
+        if t >= models_sec:
+            a = min(1.0, (t - models_sec) / 0.5)
+            bx0 = SX; bx1 = W - SX
+            by0 = CY + CH + 35; by1 = by0 + 130
+            d.rounded_rectangle([bx0,by0,bx1,by1], radius=12,
+                fill=fade_col(CARD_BG2, a))
+            # "Models Evaluated" label centered
+            bb = d.textbbox((0,0), "Models Evaluated", font=f_models_h)
+            mx = (W - (bb[2]-bb[0])) // 2
+            d.text((mx, by0+14), "Models Evaluated", font=f_models_h,
+                fill=fade_col(ACCENT, a))
+            # Pill badges
+            PILL_BG = (30, 42, 90)
+            pill_pad_x, pill_pad_y = 18, 8
+            pill_gap = 22
+            total_w = sum(d.textbbox((0,0), m, font=f_model)[2] for m in models) \
+                      + 2*pill_pad_x*len(models) + pill_gap*(len(models)-1)
+            px = (W - total_w) // 2
+            py = by0 + 14 + (bb[3]-bb[1]) + 16
+            for m in models:
+                bb = d.textbbox((0,0), m, font=f_model)
+                pw = bb[2]-bb[0] + 2*pill_pad_x
+                ph = bb[3]-bb[1] + 2*pill_pad_y
+                d.rounded_rectangle([px, py, px+pw, py+ph], radius=ph//2,
+                    fill=fade_col(PILL_BG, a), outline=fade_col(ACCENT, a), width=1)
+                d.text((px+pill_pad_x, py+pill_pad_y), m, font=f_model,
+                    fill=fade_col(TEXT_W, a))
+                px += pw + pill_gap
+
         frames.append(f)
     return frames
 
 # ── Slide 10: Closing (4.0s) ────────────────────────────────────────────────
 def gen_closing(n):
-    url = "https://alaya-studio.github.io/WorldMark/"
+    url   = "https://alaya-studio.github.io/WorldMark/"
+    GLOW  = (60, 100, 220)
+    f_url = load_font(36)
     frames = []
     for i in range(n):
-        t=i/FPS
-        f,d=make_base()
-        a=min(1.0,t/0.8)
-        ctext(d,"WorldMark",300,f_hero,fade_col(TEXT_W,a),shadow=True)
-        ctext(d,"A Unified Benchmark Suite for Interactive Video World Models",445,f_sub,fade_col(ACCENT,a))
-        if t>0.5:
-            ua=min(1.0,(t-0.5)/0.5)
-            bb=d.textbbox((0,0),url,font=f_body)
-            tw=bb[2]-bb[0]; ux=(W-tw)//2; uy=590; pad=20
-            d.rounded_rectangle([ux-pad,uy-pad,ux+tw+pad,uy+42+pad],
-                radius=12,fill=fade_col(CARD_BG,ua),outline=fade_col(ACCENT,ua),width=2)
-            d.text((ux,uy),url,font=f_body,fill=fade_col(ACCENT,ua))
+        t = i/FPS
+        f, d = make_base()
+
+        # Subtle horizontal glow line behind title
+        if t > 0.1:
+            ga = min(1.0, (t-0.1)/0.6)
+            for gy in range(H//2-90, H//2-70):
+                brightness = max(0, 1.0 - abs(gy - (H//2-80)) / 10.0)
+                gc = tuple(int(c * brightness * ga * 0.4) for c in GLOW)
+                d.line([(W//4, gy),(3*W//4, gy)], fill=gc)
+
+        # Title slides up + fades in
+        title_a   = min(1.0, max(0.0, (t-0.0)/0.7))
+        title_y   = int(280 + (1-title_a)**2 * 60)
+        ctext(d, "WorldMark", title_y, f_hero, fade_col(TEXT_W, title_a), shadow=True)
+
+        # Subtitle fades in after title
+        sub_a = min(1.0, max(0.0, (t-0.5)/0.6))
+        sub_y = int(435 + (1-sub_a)**2 * 30)
+        ctext(d, "A Unified Benchmark Suite for Interactive Video World Models",
+              sub_y, f_sub, fade_col(ACCENT, sub_a))
+
+        # URL box slides up + fades in
+        url_a = min(1.0, max(0.0, (t-1.1)/0.6))
+        if url_a > 0:
+            bb  = d.textbbox((0,0), url, font=f_url)
+            tw  = bb[2]-bb[0]
+            ux  = (W-tw)//2
+            uy  = int(590 + (1-url_a)**2 * 25)
+            pad = 22
+            d.rounded_rectangle([ux-pad, uy-pad, ux+tw+pad, uy+44+pad],
+                radius=14, fill=fade_col(CARD_BG, url_a),
+                outline=fade_col(ACCENT, url_a), width=2)
+            d.text((ux, uy), url, font=f_url, fill=fade_col(ACCENT, url_a))
+
         frames.append(f)
     return frames
 
