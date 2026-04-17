@@ -59,10 +59,16 @@
         </p>
 
         <p class="is-size-6 has-text-grey">
-          <sup>1</sup>Shanda AI Research Tokyo,
+          <sup>1</sup>Alaya Studio, Shanda AI Research Tokyo,
           <sup>2</sup>The University of Tokyo,
           <sup>3</sup>Shanghai Innovation Institute
         </p>
+
+        <div class="affiliation-logos" style="display: flex; justify-content: center; align-items: center; gap: 3rem; margin-top: 1.5rem; flex-wrap: wrap;">
+          <img src="static/images/alaya.svg" alt="Alaya Studio" class="logo-alaya" style="height: 48px; object-fit: contain;">
+          <img src="static/images/utokyo.svg" alt="The University of Tokyo" style="height: 60px; object-fit: contain;">
+          <img src="static/images/sii.svg" alt="Shanghai Innovation Institute" style="height: 60px; object-fit: contain;">
+        </div>
 
         <p class="buttons is-centered" style="margin-top: 1.5rem;">
           <a class="button is-dark" href="#" target="_blank" rel="noopener">
@@ -525,6 +531,11 @@
   </main>
 
   <style>
+    /* Invert black Alaya logo on dark backgrounds */
+    @media (prefers-color-scheme: dark) {
+      .logo-alaya { filter: invert(1); }
+    }
+
     /* Model Arena button */
     .arena-btn {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%) !important;
